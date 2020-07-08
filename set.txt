@@ -1,0 +1,6 @@
+Mente iba ciselne udaje!!!
+vyska 500
+sirka 600
+delay_medzi_fps_ms 20
+rychlost 3
+\
