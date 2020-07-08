@@ -30,3 +30,8 @@ support link: https://www.paypal.me/untriexprogramming
 
 # settings
 You can change height and width of canvas in set.txt file. You can also edit delay between frames and speed of character.
+
+# youtube
+youtube chanell: https://www.youtube.com/channel/UCqMJkZJRNlaXu0aDV6ceHFg
+I will upload videos about this project, programing tutorials and tech videos.
+I know first video isn't that good, but i haven't got enought time to make it. Next videos will be better (i hope) :D
