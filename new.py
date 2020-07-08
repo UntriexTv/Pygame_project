@@ -30,7 +30,7 @@ except:
     mapa_spawn = [50, 50]
 
 pygame.init()
-win = pygame.display.set_mode((1200, vyska))
+win = pygame.display.set_mode((sirka, vyska))
 pygame.display.set_caption("First Game")
 
 try:
