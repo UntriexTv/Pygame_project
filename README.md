@@ -12,6 +12,8 @@ The aim of this project is to make open source, easy to modify and use game. It 
 - adding animations
 - AI and enemy
 - Guns
+- updates over internet
+- sounds
 
 # Some aditional info
 Soon will be available documentation to this game.
@@ -23,4 +25,8 @@ If you like to help me with the project you can do several things:
 - writing new ideas to the game.
 - you can support me on paypal. I don't cost much and it will motivate me to do updates quickier and better.
 Thanks :D
+
 support link: https://www.paypal.me/untriexprogramming
+
+# settings
+You can change height and width of canvas in set.txt file. You can also edit delay between frames and speed of character.
