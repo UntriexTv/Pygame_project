@@ -1,6 +1,6 @@
-Mente iba ciselne udaje!!!
-vyska 500
-sirka 600
-delay_medzi_fps_ms 20
-rychlost 3
+Change only numbers!!!
+height 500
+width 600
+delay_between_frames_ms 20
+speed 3
 \
