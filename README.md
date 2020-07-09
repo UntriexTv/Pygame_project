@@ -10,7 +10,7 @@ bassic functions will be:
 - customization practicly in everything
 
 # Plans for the future
-- Adding menu
+- Adding menu (kinda done)
 - Adding more settings
 - making infinity generated word
 - adding animations
