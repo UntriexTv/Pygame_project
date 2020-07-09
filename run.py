@@ -2,8 +2,45 @@ import pygame, pickle, threading, time, os, pathlib
 import loading
 import Gui_functions
 from functools import partial
-map_chosing = True
+map_chosing = False
 menu_running = True
+settings_running = False
+
+settings = open("set.txt", "r")
+settings.readline()
+height = int(settings.readline().replace("height ", ""))
+width = int(settings.readline().replace("width ", ""))
+delay = int(settings.readline().replace("delay_between_frames_ms ", ""))
+vel = int(settings.readline().replace("speed ", ""))
+nothing_special = settings.readline()
+settings.close()
+pygame.init()
+win = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Pygame")
+
+def menu_settings():
+    def stop_settings():
+        global settings_running
+        settings_running = False
+    global settings_running
+    settings_running = True
+    while settings_running:
+        pygame.time.delay(delay)
+        win.fill((0, 0, 0))
+        for evt in pygame.event.get():
+            if evt.type == pygame.QUIT:
+                pygame.quit()
+        Gui_functions.message_display(win, "SETTINGS", width//2, 50, 100, color=Gui_functions.white)
+        Gui_functions.message_display(win, "Height: ", 50, 125, 25, color=Gui_functions.white)
+        Gui_functions.message_display(win, str(height), 200, 125, 25, color=Gui_functions.white)
+        Gui_functions.message_display(win, "Widht: ", 50, 175, 25, color=Gui_functions.white)
+        Gui_functions.message_display(win, str(width), 200, 175, 25, color=Gui_functions.white)
+        Gui_functions.message_display(win, "Delay: ", 50, 225, 25, color=Gui_functions.white)
+        Gui_functions.message_display(win, str(delay) + " MS", 200, 225, 25, color=Gui_functions.white)
+        Gui_functions.button(win, "exit", width - 150, height - 100, 100, 50, Gui_functions.bright_green,
+                                 Gui_functions.green, action=stop_settings)
+        pygame.display.update()
+
 
 def pause_variable():
     global paused, paused_timer
@@ -39,40 +76,42 @@ def load_map(map):
 
 
 def chose_map():
+    global map_chosing
+    map_chosing = True
+    time.sleep(1)
+    def stop_map():
+        global map_chosing
+        map_chosing = False
     while map_chosing:
         pygame.time.delay(delay)
         win.fill((0, 0, 0))
+        Gui_functions.message_display(win, "CHOSE MAP", width // 2, 50, 100, color=Gui_functions.white)
         for evt in pygame.event.get():
             if evt.type == pygame.QUIT:
                 pygame.quit()
         list = os.listdir(str(pathlib.Path().absolute()) + nothing_special + "maps" + nothing_special)
         loop = 0
         for i in list:
-            Gui_functions.button(win, i, width//2 - 50, 25 + loop *60, 100, 50, Gui_functions.bright_green,
+            Gui_functions.button(win, i, width//2 - 50, 100 + loop *60, 100, 50, Gui_functions.bright_green,
                                  Gui_functions.green, action=partial(load_map, i))
             loop += 1
+        Gui_functions.button(win, "exit", width - 150, height - 100, 100, 50, Gui_functions.bright_green,
+                                 Gui_functions.green, action=stop_map)
         pygame.display.update()
 
 
 def start_screen():
-    Gui_functions.button(win, "play", width//2 - 50, height//2 - 60, 100, 50, Gui_functions.bright_green,
-                         Gui_functions.green, action=chose_map)
-    Gui_functions.button(win, "settings", width // 2 - 50, height // 2, 100, 50, Gui_functions.bright_green,
-                         Gui_functions.green)
-    Gui_functions.button(win, "Exit", width // 2 - 50, height // 2 + 60, 100, 50, Gui_functions.bright_green,
-                         Gui_functions.green, action=pygame.quit)
+    if map_chosing is False:
+        Gui_functions.message_display(win, "MENU", width // 2, 50, 100, color=Gui_functions.white)
+        Gui_functions.button(win, "play", width//2 - 50, height//2 - 60, 100, 50, Gui_functions.bright_green,
+                             Gui_functions.green, action=chose_map)
+        Gui_functions.button(win, "settings", width // 2 - 50, height // 2, 100, 50, Gui_functions.bright_green,
+                             Gui_functions.green, action=menu_settings)
+        Gui_functions.button(win, "Exit", width // 2 - 50, height // 2 + 60, 100, 50, Gui_functions.bright_green,
+                             Gui_functions.green, action=pygame.quit)
 
 
-settings = open("set.txt", "r")
-settings.readline()
-height = int(settings.readline().replace("height ", ""))
-width = int(settings.readline().replace("width ", ""))
-delay = int(settings.readline().replace("delay_between_frames_ms ", ""))
-vel = int(settings.readline().replace("speed ", ""))
-nothing_special = settings.readline()
-pygame.init()
-win = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Pygame")
+
 while menu_running:
     pygame.time.delay(delay)
     for evt in pygame.event.get():
