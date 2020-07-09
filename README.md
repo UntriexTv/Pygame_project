@@ -2,8 +2,12 @@
 This project is in really early states of development
 
 # What is this project about?
-I always liked games where i was able to make any changes and can easyly see what is happening. Thats why i decided to make this project.
+I always liked games where i was able to make any changes and can easily see what is happening. Thats why i decided to make this project.
 The aim of this project is to make open source, easy to modify and use game. It will be 2D platformer game.
+bassic functions will be:
+- monitoring all kind of variables in game
+- easy to use mod system
+- customization practicly in everything
 
 # Plans for the future
 - Adding menu
@@ -34,4 +38,4 @@ You can change height and width of canvas in set.txt file. You can also edit del
 # youtube
 youtube chanell: https://www.youtube.com/channel/UCqMJkZJRNlaXu0aDV6ceHFg
 I will upload videos about this project, programing tutorials and tech videos.
-I know first video isn't that good, but i haven't got enought time to make it. Next videos will be better (i hope) :D
+For now there isnt any video, but i will upload there updates on my coding progress and maybe som tech videos and tutorials
