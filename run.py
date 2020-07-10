@@ -149,8 +149,8 @@ dirt_up = pygame.image.load("dirt_up.png")
 dirt_grass = pygame.image.load("dirt_grass.png")
 finish = pygame.image.load('finish.png')
 player_texture = pygame.image.load(os.path.join('animations', 'adventurer-idle-00.png'))
-charge = pygame.image.load("naboj.png")
-pistol = pygame.image.load("pistol.png")
+#charge = pygame.image.load("naboj.png")
+#pistol = pygame.image.load("pistol.png")
 #player_mask = pygame.mask.from_surface(dirt)
 rig_list = []
 stairs_up = []
@@ -172,6 +172,7 @@ load_down = []
 load_grass = []
 paused = False
 paused_timer = 0
+max_fall_velocity = 2.5
 
 
 def optimalization():
@@ -259,7 +260,7 @@ t1.start()
 while run:
     pygame.time.delay(delay)
     paused_timer += 1
-    if down == 0 and isjump is False:
+    if down == 0 and isjump is False and fall_velocity < max_fall_velocity:
         y += fall_velocity
         fall_velocity += gravitation
     else:
