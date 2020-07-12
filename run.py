@@ -172,7 +172,7 @@ load_down = []
 load_grass = []
 paused = False
 paused_timer = 0
-max_fall_velocity = 2.5
+max_fall_velocity = 5
 
 
 def optimalization():
@@ -260,9 +260,10 @@ t1.start()
 while run:
     pygame.time.delay(delay)
     paused_timer += 1
-    if down == 0 and isjump is False and fall_velocity < max_fall_velocity:
+    if down == 0 and isjump is False:
         y += fall_velocity
-        fall_velocity += gravitation
+        if fall_velocity <= max_fall_velocity:
+            fall_velocity += gravitation
     else:
         fall_velocity = 0
     for event in pygame.event.get():
@@ -311,7 +312,7 @@ while run:
             y += vel
 
         if keys[pygame.K_SPACE]:
-            if not isjump:
+            if not isjump and down == 1:
                 isjump = True
                 jump_begining = True
                 y_velocity = jump_speed
@@ -327,6 +328,8 @@ while run:
             if isjump:
                 y -= y_velocity
                 y_velocity -= gravitation
+                if y_velocity <= 0:
+                    isjump = False
                 jump_begining = False
     if keys[pygame.K_ESCAPE] and 20 < paused_timer:
         if paused:
@@ -378,7 +381,8 @@ while run:
                              Gui_functions.green, action=pygame.quit)
     pygame.display.update()
     collision_test()
-    print("pravo: " + str(right_down) + " lavo: " + str(left_down) + " hore: " + str(up) + " dole: " + str(down) +
-          " is jump: " + str(isjump))
-
+    #print("pravo: " + str(right_down) + " lavo: " + str(left_down) + " hore: " + str(up) + " dole: " + str(down) +
+    #      " is jump: " + str(isjump))
+    print(str(fall_velocity) + " / " + str(max_fall_velocity))
+    print(fall_velocity <= max_fall_velocity)
 pygame.quit()
