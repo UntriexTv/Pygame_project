@@ -3,4 +3,5 @@ height 500
 width 600
 delay_between_frames_ms 20
 speed 3
+debug_tool 0
 \
