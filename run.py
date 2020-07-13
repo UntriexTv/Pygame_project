@@ -1,4 +1,4 @@
-import pygame, pickle, threading, time, os, pathlib
+import pygame, pickle, threading, time, os, pathlib, tkinter
 import loading
 import Gui_functions
 from functools import partial
@@ -6,17 +6,40 @@ map_chosing = False
 menu_running = True
 settings_running = False
 
-settings = open("set.txt", "r")
+settings = open("set.txt", "r")                                             #Open file with settings variables
 settings.readline()
-height = int(settings.readline().replace("height ", ""))
-width = int(settings.readline().replace("width ", ""))
-delay = int(settings.readline().replace("delay_between_frames_ms ", ""))
-vel = int(settings.readline().replace("speed ", ""))
-nothing_special = settings.readline()
-settings.close()
-pygame.init()
-win = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Pygame")
+height = int(settings.readline().replace("height ", ""))                    #Reads and define height of canvas from set.txt
+width = int(settings.readline().replace("width ", ""))                      #Reads and define width of canvas form set.txt
+delay = int(settings.readline().replace("delay_between_frames_ms ", ""))    #Reads and define delay between frames from set.txt
+vel = int(settings.readline().replace("speed ", ""))                        #Reads and define velocity of player from set.txt
+debug_enable = int(settings.readline().replace("debug_tool ", ""))          #Enables or disables debug (set.txt)
+nothing_special = settings.readline()                                       #Reads one special character that i cant write there
+settings.close()                                                            #Closes file with settoings (set.txt)
+pygame.init()                                                               #initialization of pygame module
+win = pygame.display.set_mode((width, height))                              #defines window of game with width and height
+pygame.display.set_caption("Pygame")                                        #sets caption of window
+
+
+def debug():
+    def debug_variables():
+        while True:
+            try:
+                canvas.delete("debug")
+                canvas.create_text(40, 40, text="x: " + str(int(x)), tag="debug")
+                canvas.create_text(40, 60, text="y: " + str(int(y)), tag="debug")
+                canvas.create_text(40, 100, text="x: " + str(int(xmap)), tag="debug")
+                canvas.create_text(40, 120, text="y: " + str(int(y)), tag="debug")
+                canvas.update()
+            except:
+                pass
+            time.sleep(0.25)
+    canvas = tkinter.Canvas(height= 600, width=400)
+    canvas.pack()
+    canvas.create_text(85, 25, text="COORDINATES ON CANVAS:")
+    canvas.create_text(85, 85, text="COORDINATES ON MAP:")
+    debug_variables()
+    canvas.mainloop()
+
 
 def menu_settings():
     def stop_settings():
@@ -136,13 +159,15 @@ except:
     x = 50
     y = 50
 
-isjump = False
+isjump = False                                      #variable needed for jump mechanics
 y_velocity = 0
 fall_velocity = 0
-jump_speed = 8
-gravitation = 0.4
-run = True
-inair = True
+max_fall_velocity = 5                               #Max speed for falling player
+jump_speed = 8                                      #speed of jump
+gravitation = 0.4                                   #gravitation needed for falls and jumps
+run = True                                          #dont change variable of main loop
+inair = True                                        #variable if is character in air
+#Loads textures
 dirt = pygame.image.load('dirt.jpg')
 dirt_down = pygame.image.load('dirt_down.png')
 dirt_up = pygame.image.load("dirt_up.png")
@@ -152,6 +177,8 @@ player_texture = pygame.image.load(os.path.join('animations', 'adventurer-idle-0
 #charge = pygame.image.load("naboj.png")
 #pistol = pygame.image.load("pistol.png")
 #player_mask = pygame.mask.from_surface(dirt)
+
+#Lists for colision system
 rig_list = []
 stairs_up = []
 stairs_down = []
@@ -165,14 +192,18 @@ player_wins = 0
 stairs_right = False
 jump_begining = False
 stairs_left = False
-facing = "right"
+##################
+facing = "right"            #variable where is character facing will be used for animations
+
+#lists for loading system
 load_dirt = []
 load_up = []
 load_down = []
 load_grass = []
+
+#pause variables
 paused = False
 paused_timer = 0
-max_fall_velocity = 5
 
 
 def optimalization():
@@ -253,25 +284,30 @@ def collision_test():
         stairs_right = False
 
 
+# defines and starts threads for optimalization and debug if its enabled
 t1 = threading.Thread(target=optimalization)
+t2 = threading.Thread(target=debug)
+t2.daemon = True
 t1.daemon = True
 t1.start()
+if debug_enable == 1:           # if is debug enabled in settings it will start
+    t2.start()
 
-while run:
-    pygame.time.delay(delay)
-    paused_timer += 1
-    if down == 0 and isjump is False:
+while run:                                          # Main game loop
+    pygame.time.delay(delay)                        #Sets delay between frames based on variable in settings
+    paused_timer += 1                               #timer for pause function
+    if down == 0 and isjump is False:               #function for falling
         y += fall_velocity
         if fall_velocity <= max_fall_velocity:
             fall_velocity += gravitation
     else:
         fall_velocity = 0
-    for event in pygame.event.get():
+    for event in pygame.event.get():                #kills loop if canvas is closed
         if event.type == pygame.QUIT:
             run = False
 
-    keys = pygame.key.get_pressed()
-    xmap = x + map_move
+    keys = pygame.key.get_pressed()                 #variable of all keys pressed
+    xmap = x + map_move                             #x position on map
     if not paused:
         if keys[pygame.K_LEFT]:
             if left_down == 0:
@@ -290,7 +326,7 @@ while run:
                         pass
                     else:
                         x -= vel
-                    y -= 5
+                    y -= 3
             facing = "left"
 
         if keys[pygame.K_RIGHT]:
@@ -305,7 +341,7 @@ while run:
                         map_move += vel
                     else:
                         x += vel
-                    y -= 5
+                    y -= 3
             facing = "right"
 
         if keys[pygame.K_DOWN] and down == 0:
@@ -339,15 +375,15 @@ while run:
         paused_timer = 0
 
     win.fill((255, 255, 255))
-    hrac = win.blit(player_texture, (x, y))
+    hrac = win.blit(player_texture, (int(x), int(y)))
     #guns.zbran(win, "pistol", x+16, y, strana, pistol)
 
-    hrac_rig_d = pygame.Rect(x, y + 5, 32, 32)
-    hrac_rig_h = pygame.Rect(x, y - 5, 32, 32)
-    hrac_rig_p_h = pygame.Rect(x + 5, y - 10, 32, 32)
-    hrac_rig_l_h = pygame.Rect(x - 5, y - 10, 32, 32)
-    hrac_rig_p_d = pygame.Rect(x + 5, y, 32, 32)
-    hrac_rig_l_d = pygame.Rect(x - 5, y, 32, 32)
+    hrac_rig_d = pygame.Rect(int(x), int(y) + 5, 32, 32)
+    hrac_rig_h = pygame.Rect(int(x), int(y) - 5, 32, 32)
+    hrac_rig_p_h = pygame.Rect(int(x) + 5, int(y) - 10, 32, 32)
+    hrac_rig_l_h = pygame.Rect(int(x) - 5, int(y) - 10, 32, 32)
+    hrac_rig_p_d = pygame.Rect(int(x) + 5, int(y), 32, 32)
+    hrac_rig_l_d = pygame.Rect(int(x) - 5, int(y), 32, 32)
     rig_list.clear()
     try:
         ciel = win.blit(finish, (int(map_finish[0]) - map_move, int(map_finish[1])))
@@ -381,8 +417,4 @@ while run:
                              Gui_functions.green, action=pygame.quit)
     pygame.display.update()
     collision_test()
-    #print("pravo: " + str(right_down) + " lavo: " + str(left_down) + " hore: " + str(up) + " dole: " + str(down) +
-    #      " is jump: " + str(isjump))
-    print(str(fall_velocity) + " / " + str(max_fall_velocity))
-    print(fall_velocity <= max_fall_velocity)
 pygame.quit()
