@@ -18,6 +18,7 @@ bassic functions will be:
 - Guns
 - updates over internet
 - sounds
+- powerfull debug tool (tool to monitor and change lot of variables)
 
 # Some aditional info
 Soon will be available documentation to this game.
@@ -27,7 +28,7 @@ If you like to help me with the project you can do several things:
 - contacting me and helping me with this project (contact me on untriex.programming@gmail.com)
 - writing ideas to optimise code
 - writing new ideas to the game.
-- you can support me on paypal. I don't cost much and it will motivate me to do updates quickier and better.
+- you can support me on paypal. It don't cost much and it will motivate me to do updates quickier and better.
 Thanks :D
 
 support link: https://www.paypal.me/untriexprogramming
