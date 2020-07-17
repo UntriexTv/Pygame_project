@@ -1,19 +1,19 @@
 import pygame
 
 
-def load_blok(blok, zoznam, win, mapposun, zoznamrig, vyska):
+def load_blok(blok, list, window, map_move, list_rig, height):              #loads casual block (dirt, grass, etc.)
     kolecko = 0
-    rozdiel = vyska - 500
+    rozdiel = height - 500
     try:
-        for i in zoznam:
-            objekt = win.blit(blok, (zoznam[kolecko][0] - mapposun, zoznam[kolecko][1] + rozdiel))
-            zoznamrig.append(objekt)
+        for i in list:
+            objekt = window.blit(blok, (list[kolecko][0] - map_move, list[kolecko][1] + rozdiel))
+            list_rig.append(objekt)
             kolecko = kolecko + 1
     except:
         pass
 
 
-def load_blok_dole(blok, zoznam, win, mapposun, zoznamrig, vyska):
+def load_blok_dole(blok, zoznam, win, mapposun, zoznamrig, vyska):      #loads stairs down
     kolecko = 0
     rozdiel = vyska - 500
     try:
@@ -30,7 +30,7 @@ def load_blok_dole(blok, zoznam, win, mapposun, zoznamrig, vyska):
         pass
 
 
-def load_blok_hore(blok, zoznam, win, mapposun, zoznamrig, vyska):
+def load_blok_hore(blok, zoznam, win, mapposun, zoznamrig, vyska):      #loads stairs up
     kolecko = 0
     rozdiel = vyska - 500
     try:
