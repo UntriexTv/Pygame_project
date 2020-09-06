@@ -1,4 +1,4 @@
-# Pygame_project
+# Pygame_project (developing is paused and will be restored in unknown time)
 This project is in really early states of development
 
 # What is this project about?
